@@ -1,7 +1,7 @@
 "use client"
 import { carter_one } from "@/utils/fonts";
-import CardFlip from "@/components/CardFlip";
-import Button from "@/components/Button";
+import CardFlip from "@/components/others/CardFlip";
+import Button from "@/components/button/Button";
 import Link from "next/link";
 
 export default function Home() {

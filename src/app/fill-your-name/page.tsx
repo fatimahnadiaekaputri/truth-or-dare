@@ -1,60 +1,55 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import SpinWheel from "@/components/SpinWheel";
-import InputForm from "@/components/InputForm";
+import React, { useState } from "react";
+import InputForm from "@/components/form/InputForm";
+import SpinWheel from "@/components/spinWheel/SpinWheel";
+import { IspinWheelProps } from "@/components/spinWheel/SpinWheel.interface";
+import { IDataPlayers } from "@/components/player/player.interface";
 
-interface Player {
-  id: number;
-  name: string;
-  color: string;
-  score: string;
-}
-
-const initialPlayers: Player[] = [
-  { id: 1, name: "Player 1", color: "#8b35bc", score: "" },
-  { id: 2, name: "Player 2", color: "#b163da", score: "" },
-  { id: 3, name: "", color: "", score: "" },
-  { id: 4, name: "", color: "", score: "" },
-  { id: 5, name: "", color: "", score: "" },
-];
+// const segments: IDataPlayers[] = [
+//   { id: 1, name: 'nadia', color: 'red', score: 0 },
+//   { id: 2, name: 'mark', color: 'blue', score: 0 }
+// ];
 
 const Page2: React.FC = () => {
-  const [players, setPlayers] = useState<Player[]>(initialPlayers);
-  const spinWheelContainerRef = useRef<HTMLDivElement | null>(null);
-  const inputFormContainerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (spinWheelContainerRef.current && inputFormContainerRef.current) {
-      const root = ReactDOM.createRoot(spinWheelContainerRef.current);
-      const secondRoot = ReactDOM.createRoot(inputFormContainerRef.current);
+  const [players, setPlayers] = useState<IDataPlayers[]>([
+    { id: 1, name: 'nadia', color: 'red', score: 0 },
+    { id: 2, name: 'mark', color: 'blue', score: 0 }, 
+  ]);
 
-      root.render(
-        <React.StrictMode>
-          <SpinWheel players={players} />
-        </React.StrictMode>
-      );
+  const handleSpinFinish = (result: string) => {
+    console.log(`Spun to: ${result}`);
+  };
 
-      secondRoot.render(
-        <React.StrictMode>
-          <InputForm players={players} setPlayers={setPlayers} />
-        </React.StrictMode>
-      );
-
-      return () => {
-        root.unmount();
-        secondRoot.unmount();
-      };
-    }
-  }, [players]);
+  const spinWheelProps: IspinWheelProps = {
+    segments: players,
+    setPlayers,
+    onFinished: handleSpinFinish,
+    wheelColor: 'mainGreen',
+    textColor: 'white',
+    needleColor: 'lightCream',
+    buttonText: 'Spin',
+    isOnlyOnce: false,
+    size: 290,
+    upDuration: 100,
+    downDuration: 600,
+    fontFamily: 'carter_one',
+    fontSize: 15,
+    needleLocation: 'top',
+    showTextOnSpin: true
+  }
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Spin Wheel Section */}
       <div className="w-full md:w-1/2 flex justify-center items-center md:pt-0 pt-20">
-        <div ref={spinWheelContainerRef}></div>
+        <SpinWheel {...spinWheelProps} />
       </div>
+
+      {/* Input Form Section */}
       <div className="w-full md:w-1/2 flex justify-center items-center md:pt-0 pt-20">
-        <div ref={inputFormContainerRef}></div>
+        {/* Menambahkan InputForm dan meneruskan state dan setter */}
+        <InputForm players={players} setPlayers={setPlayers} />
       </div>
     </div>
   );
