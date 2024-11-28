@@ -17,4 +17,8 @@ export interface IspinWheelProps {
     fontSize?: number;
     needleLocation?: 'center' | 'top';
     showTextOnSpin?: boolean;
+    needleText: string;
+    setNeedleText: (text: string) => void;
+    isStarted?: boolean;
+    setIsStarted: (value: boolean) => void;
 }

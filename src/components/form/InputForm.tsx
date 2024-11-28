@@ -1,20 +1,24 @@
+"use client";
 import React, { useState } from "react";
+import Link from "next/link";
+import { usePlayerContext } from "../player/PlayerContext";
 
-interface Player {
-  id: number;
-  name: string;
-  color: string;
-  score: number;
-}
+// interface Player {
+//   id: number;
+//   name: string;
+//   color: string;
+//   score: number;
+// }
 
-interface InputFormProps {
-  players: Player[];
-  setPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
-}
+// interface InputFormProps {
+//   players: Player[];
+//   setPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
+// }
 
 const colors = ['green', 'purple', 'orange'];
 
-const InputForm: React.FC<InputFormProps> = ({ players, setPlayers }) => {
+const InputForm: React.FC = () => {
+  const { players, setPlayers } = usePlayerContext();
   const [tempPlayers, setTempPlayers] = useState(players);
   const [visibleInputs, setVisibleInputs] = useState(2);
 
@@ -31,24 +35,14 @@ const InputForm: React.FC<InputFormProps> = ({ players, setPlayers }) => {
     setPlayers(tempPlayers);
   };
 
-  const handleInputChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const updatedPlayers = [...players];
-    updatedPlayers[index] = {
-      ...updatedPlayers[index],
-      [name]: value
-    };
-    setPlayers(updatedPlayers);
-  }
-
   const addInput = () => {
-    if(visibleInputs < 5) {
+    if (tempPlayers.length < 5) {
       setVisibleInputs(visibleInputs + 1);
-      const newPlayer: Player = {
+      const newPlayer = {
         id: tempPlayers.length + 1,
         name: "",
         color: colors[tempPlayers.length % colors.length],
-        score: 0
+        score: 0,
       };
       setTempPlayers([...tempPlayers, newPlayer]);
     }
@@ -76,14 +70,17 @@ const InputForm: React.FC<InputFormProps> = ({ players, setPlayers }) => {
           />
         </div>
       ))}
-      {visibleInputs < 5 && (
+      {tempPlayers.length < 5 && (
         <button type="button" onClick={addInput}>
           Add Player
         </button>
       )}
-      <button type="submit" className="bg-green-900 hover:bg-green-200 text-white font-bold py-2 px-4 rounded">
-        Submit
-      </button>
+      <Link href="/pages/spin">
+        <button type="submit" className="bg-green-900 hover:bg-green-200 text-white font-bold py-2 px-4 rounded">
+          Submit
+        </button>
+      </Link>
+      
     </form>
   );
 };

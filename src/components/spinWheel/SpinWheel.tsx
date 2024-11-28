@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+"use client";
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 import { IspinWheelProps } from "./SpinWheel.interface";
-import { boolean } from "zod";
-import { uptime } from "process";
-import { clear } from "console";
 
-const SpinWheel: React.FC<IspinWheelProps> = ({
+const SpinWheel = forwardRef(({
     segments,
     setPlayers,
     onFinished,
@@ -19,14 +17,17 @@ const SpinWheel: React.FC<IspinWheelProps> = ({
     fontFamily = 'carter_one',
     fontSize = 15,
     needleLocation = 'center',
-    showTextOnSpin = true
-}: IspinWheelProps) => {
+    showTextOnSpin = true,
+    needleText,
+    setNeedleText,
+    isStarted,
+    setIsStarted,
+}: IspinWheelProps, ref) => {
 
     const nameArray = segments.map((segment) => segment.name).filter(Boolean);
     const colorArray = segments.map((segment) => segment.color).filter(Boolean);
     const [isFinished, setFinished] = useState<boolean>(false);
-    const [isStarted, setIsStarted] = useState<boolean>(false);
-    const [needleText, setNeedleText] = useState<string>("");
+    
     let currentSegment = '';
     let timerHandle: any = 0;
     const timerDelay = segments.length;
@@ -161,6 +162,11 @@ const SpinWheel: React.FC<IspinWheelProps> = ({
       setNeedleText(nameArray[i]);
     }
 
+    // Gunakan useImperativeHandle untuk mengekspor fungsi spin
+    useImperativeHandle(ref, () => ({
+      spin,
+    }));
+
     const spin = () => {
       setIsStarted(true);
       if(timerHandle === 0) {
@@ -196,8 +202,6 @@ const SpinWheel: React.FC<IspinWheelProps> = ({
         timerHandle = 0;
         angleDelta = 0;
       }
-
-
     }
 
     const wheelDraw = () => {
@@ -218,15 +222,11 @@ const SpinWheel: React.FC<IspinWheelProps> = ({
             width={size * 2}
             height={size * 2}
             style={{
-              pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto',
+              pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto', 
             }}>
         </canvas>
-        {showTextOnSpin && isStarted && 
-          <div style={{textAlign: 'center', padding: '20px', fontWeight: 'bold', fontSize: '1.5em', fontFamily: fontFamily}}> 
-            {needleText} 
-          </div>}
       </div>
     )
-};
+});
 
 export default SpinWheel;
