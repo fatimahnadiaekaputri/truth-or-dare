@@ -1,8 +1,7 @@
-import { PlayerProvider } from "@/components/player/PlayerContext";
 import WelcomePage from "./pages/welcome-page/page";
 import { AppProps } from "next/app";
 
-export default function Home({ Component, pageProps}: AppProps) {
+export default function Home() {
   return (
     // <RootLayout>
     <>

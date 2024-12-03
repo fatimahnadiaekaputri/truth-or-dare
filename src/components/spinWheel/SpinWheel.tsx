@@ -4,7 +4,7 @@ import { IspinWheelProps } from "./SpinWheel.interface";
 
 const SpinWheel = forwardRef(({
     segments,
-    setPlayers,
+    // setPlayers,
     onFinished,
     wheelColor = 'mainGreen',
     textColor = 'white',
@@ -15,17 +15,17 @@ const SpinWheel = forwardRef(({
     upDuration = 100,
     downDuration = 600,
     fontFamily = 'carter_one',
-    fontSize = 15,
+    // fontSize = 15,
     needleLocation = 'center',
-    showTextOnSpin = true,
-    needleText,
+    // showTextOnSpin = true,
+    // needleText,
     setNeedleText,
-    isStarted,
+    // isStarted,
     setIsStarted,
 }: IspinWheelProps, ref) => {
 
     const nameArray = segments.map((segment) => segment.name).filter(Boolean);
-    const colorArray = segments.map((segment) => segment.color).filter(Boolean);
+    // const colorArray = segments.map((segment) => segment.color).filter(Boolean);
     const [isFinished, setFinished] = useState<boolean>(false);
     
     let currentSegment = '';
@@ -42,6 +42,11 @@ const SpinWheel = forwardRef(({
     const centerX = (size);
     const centerY = (size);
 
+    const wheelInit = () => {
+      initCanvas();
+      wheelDraw();
+    }
+
     useEffect(() => {
       wheelInit();
       setTimeout(() => {
@@ -49,10 +54,7 @@ const SpinWheel = forwardRef(({
       }, 0);
     }, [segments]);
 
-    const wheelInit = () => {
-      initCanvas();
-      wheelDraw();
-    }
+   
 
     const initCanvas = () => {
       let canvas: HTMLCanvasElement | null = document.getElementById('canvas') as HTMLCanvasElement;
@@ -228,5 +230,8 @@ const SpinWheel = forwardRef(({
       </div>
     )
 });
+
+// Set the display name for the component
+SpinWheel.displayName = 'SpinWheel';
 
 export default SpinWheel;

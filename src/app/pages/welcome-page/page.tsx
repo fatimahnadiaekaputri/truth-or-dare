@@ -17,7 +17,7 @@ const WelcomePage: React.FC = () => {
                 Dare to Reveal the Truth!
             </h2>
             <h3 className="pt-10">
-            "Gather your squad of 2 to 5 players and get ready to reveal the truth or take on daring challenges! It’s time to create unforgettable moments with your friends!"
+            &quot;Gather your squad of 2 to 5 players and get ready to reveal the truth or take on daring challenges! Its time to create unforgettable moments with your friends!&quot;
             </h3>
             <div style={{paddingTop: "120px", paddingLeft:"175px", marginBottom:"200px"}}>
                 {/* <Button buttonText="Let's Try!" onClick={() => navigate('/page2')}/> */}
